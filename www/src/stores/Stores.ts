@@ -26,7 +26,7 @@ declare var tinycolor: any;
 
 export let baseUrl = window.location.origin + '/';
 export let analyzerReportBaseUrl = baseUrl + "/analyzer.html";
-export let analyzerBaseUrl = "/analyzer.html";
+export let analyzerBaseUrl = "/aom_analyzer/analyzer.html";
 var inMockMode = false;
 
 export function formatDate(date) {
@@ -418,12 +418,13 @@ export class Job {
   }
 
   decocerUrl(): string {
-    return 'https://people.xiph.org/~mbebenita/analyzer/inspect.js';
-    if (this.codec == 'rav1e' || this.codec == 'svt-av1') {
-      return 'https://people.xiph.org/~mbebenita/analyzer/inspect.js';
-    } else {
-      return baseUrl + `runs/${this.id}/js/decoder.js`;
-    }
+  return `/aom_analyzer/inspect.js`
+  //  return 'https://people.xiph.org/~mbebenita/analyzer/inspect.js';
+  //if (this.codec == 'rav1e' || this.codec == 'svt-av1') {
+  //  return 'https://people.xiph.org/~mbebenita/analyzer/inspect.js';
+  //} else {
+  //  return baseUrl + `runs/${this.id}/js/decoder.js`;
+  //}
   }
 
   ivfUrlPrefix() {
