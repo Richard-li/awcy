@@ -246,7 +246,7 @@ RUN \
 
 # install AOM Analyzer
 ENV \
-	ANALYZER_DIR=/opt/aom_analyzer
+	ANALYZER_DIR=${APP_DIR}/www/aom_analyzer
 
 RUN \
 	mkdir -p $(dirname ${ANALYZER_DIR}) && \
