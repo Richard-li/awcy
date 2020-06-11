@@ -134,15 +134,11 @@ ENV \
 	EMSDK_DIR=/opt/emsdk
 
 RUN \
-	EMSDK_VERSION=sdk-1.38.48-64bit && \
-	git clone https://github.com/edmond-zhu/emsdk.git ${EMSDK_DIR} && \
+	EMSDK_VERSION=sdk-1.39.16-64bit && \
+	git clone https://github.com/emscripten-core/emsdk.git ${EMSDK_DIR} && \
 	cd /opt/emsdk && \
 	./emsdk install ${EMSDK_VERSION} && \
-	./emsdk activate ${EMSDK_VERSION} && \
-	echo "hack emscript config getter (em-config)" && \
-	cp /root/.emscripten /home/${APP_USER}/.emscripten && \
-	printf '#!/usr/bin/env python\nimport os, sys\nexecfile(os.getenv("HOME")+"/.emscripten")\nprint eval(sys.argv[1])\n' >/usr/local/bin/em-config && \
-	chmod a+x /usr/local/bin/em-config
+	./emsdk activate ${EMSDK_VERSION}
 
 # install tini
 RUN \
@@ -215,10 +211,10 @@ RUN \
 	cd ${APP_DIR} && \
 	export PYTHON=python2.7 && \
 	npm install && \
-	npm run tsc && \
-	cd ${APP_DIR}/www && \
-	npm install && \
-	npm run build
+	npm run tsc
+	#cd ${APP_DIR}/www && \
+	#npm install && \
+	#npm run build
 
 # install vmaf
 ENV \
@@ -247,6 +243,48 @@ RUN \
     git clone --depth 1 -b add_print_vmaf_score https://github.com/edmond-zhu/vmaf.git ${VMAF_DIR} && \
     cd ${VMAF_DIR} && \
 	make
+
+# install AOM Analyzer
+ENV \
+	ANALYZER_DIR=/opt/aom_analyzer
+
+RUN \
+	mkdir -p $(dirname ${ANALYZER_DIR}) && \
+	git clone https://github.com/Richard-li/aomanalyzer.git ${ANALYZER_DIR} && \
+	cd ${ANALYZER_DIR} && \
+	npm install && npm run build-release
+
+
+# fetch LibAom source code
+ENV \
+    LIBAOM_DIR=/opt/libaom
+
+RUN \
+    git clone https://github.com/edmond-zhu/aom.git ${LIBAOM_DIR}
+
+
+# EMSDK Compilation
+RUN \
+    cd /tmp && \
+    mkdir buildAnalyzer && \
+    cd buildAnalyzer && \
+    cmake /opt/libaom \
+        -DENABLE_CCACHE=1 \
+        -DAOM_TARGET_CPU=generic \
+        -DENABLE_DOCS=0 \
+        -DENABLE_TESTS=0 \
+        -DCONFIG_ACCOUNTING=1 \
+        -DCONFIG_INSPECTION=1 \
+        -DCONFIG_MULTITHREAD=0 \
+        -DCONFIG_RUNTIME_CPU_DETECT=0 \
+        -DCONFIG_WEBM_IO=0 \
+		-DCMAKE_BUILD_TYPE=release \
+        -DAOM_EXTRA_C_FLAGS="-std=gnu99" \
+        -DAOM_EXTRA_CXX_FLAGS="-std=gnu++11" \
+        -DCMAKE_TOOLCHAIN_FILE=${EMSDK_DIR}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake && \
+	make inspect && \
+    cp ./examples/* ${ANALYZER_DIR}
+
 
 # add scripts
 ADD *.m *.sh *.py ${APP_DIR}/
