@@ -212,9 +212,9 @@ RUN \
 	export PYTHON=python2.7 && \
 	npm install && \
 	npm run tsc
-	#cd ${APP_DIR}/www && \
-	#npm install && \
-	#npm run build
+	cd ${APP_DIR}/www && \
+	npm install && \
+	npm run build
 
 # install vmaf
 ENV \
