@@ -211,7 +211,7 @@ RUN \
 	cd ${APP_DIR} && \
 	export PYTHON=python2.7 && \
 	npm install && \
-	npm run tsc
+	npm run tsc && \
 	cd ${APP_DIR}/www && \
 	npm install && \
 	npm run build
