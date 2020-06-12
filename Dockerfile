@@ -252,9 +252,13 @@ RUN \
 	mkdir -p $(dirname ${ANALYZER_DIR}) && \
 	git clone https://github.com/Richard-li/aomanalyzer.git ${ANALYZER_DIR} && \
 	cd ${ANALYZER_DIR} && \
-	npm install && npm run build-release && \
-	mv index.html analyzer.html && \
-	cp -r /opt/aom_analyzer ${APP_DIR}/www/
+	npm install && npm run build-release
+
+# Copy AOM Analyzer to www
+RUN \
+	COPY /opt/aom_analyzer ${APP_DIR}/www/ && \ 
+	cd ${APP_DIR}/www/aom_analyzer && \
+	mv index.html analyzer.html
 
 # fetch LibAom source code
 ENV \
