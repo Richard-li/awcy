@@ -256,9 +256,9 @@ RUN \
 
 # Copy AOM Analyzer to www
 RUN \
-	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
-	cd ${APP_DIR}/www/aom_analyzer && \
-	mv index.html analyzer.html
+#	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
+#	cd ${APP_DIR}/www/aom_analyzer && \
+#	mv index.html analyzer.html
 
 # fetch LibAom source code
 ENV \
