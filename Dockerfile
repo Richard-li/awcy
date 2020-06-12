@@ -255,7 +255,7 @@ RUN \
 	npm install && npm run build-release
 
 # Copy AOM Analyzer to www
-RUN \
+#RUN \
 #	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
 #	cd ${APP_DIR}/www/aom_analyzer && \
 #	mv index.html analyzer.html
