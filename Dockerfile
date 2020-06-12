@@ -254,12 +254,6 @@ RUN \
 	cd ${ANALYZER_DIR} && \
 	npm install && npm run build-release
 
-# Copy AOM Analyzer to www
-RUN \
-	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
-	cd ${APP_DIR}/www/aom_analyzer && \
-	mv index.html analyzer.html
-
 # fetch LibAom source code
 ENV \
     LIBAOM_DIR=/opt/libaom
@@ -289,6 +283,12 @@ RUN \
         -DCMAKE_TOOLCHAIN_FILE=${EMSDK_DIR}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake && \
 	make inspect && \
     cp ./examples/* ${ANALYZER_DIR}
+
+# Copy AOM Analyzer to www
+RUN \
+	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
+	cd ${APP_DIR}/www/aom_analyzer && \
+	mv index.html analyzer.html
 
 
 # add scripts
