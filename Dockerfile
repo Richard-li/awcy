@@ -256,7 +256,7 @@ RUN \
 
 # Copy AOM Analyzer to www
 RUN \
-	COPY /opt/aom_analyzer ${APP_DIR}/www/ && \ 
+	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
 	cd ${APP_DIR}/www/aom_analyzer && \
 	mv index.html analyzer.html
 
