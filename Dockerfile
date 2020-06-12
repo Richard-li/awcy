@@ -255,10 +255,10 @@ RUN \
 	npm install && npm run build-release
 
 # Copy AOM Analyzer to www
-#RUN \
-#	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
-#	cd ${APP_DIR}/www/aom_analyzer && \
-#	mv index.html analyzer.html
+RUN \
+	cp -r /opt/aom_analyzer ${APP_DIR}/www/ && \ 
+	cd ${APP_DIR}/www/aom_analyzer && \
+	mv index.html analyzer.html
 
 # fetch LibAom source code
 ENV \
